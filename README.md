@@ -31,3 +31,15 @@ Seu desafio é criar uma aplicação Web capaz de exibir dados que são gerados 
 
 ### Observações:
 	* Não é necessário se preocupar com autenticação, criação de usuário e login.
+
+### Inicialização da API (Node.js)
+
+Na pasta "Api", execute os seguintes comandos
+- npm install
+- node server.js
+
+### Inicialização do Frontend (Vue.js)
+
+1. Entre na pasta "Frontend";
+2. Entre na subpasta "frontend";
+   - execute o seguinte: npm run dev
