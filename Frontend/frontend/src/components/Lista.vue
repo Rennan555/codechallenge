@@ -8,6 +8,7 @@ export default {
       produtosTotal: [],
       pagAtual: 1,
       itensPorPag: 10,
+      numPags: 0,
       numItens: 0
     }
   },
@@ -22,13 +23,14 @@ export default {
     async getProdutos() {
       const res = await axios.get('http://localhost:8082/alarm');
       this.produtosTotal = res.data;
-      this.numItens = this.produtosTotal.length
+      this.numItens = this.produtosTotal.length;
+      this.numPags = Math.ceil(this.produtosTotal.length / this.itensPorPag);
       this.atualizarPagina();
     },
     async atualizarPagina() {
-      if (this.pagAtual > this.produtosTotal.length / this.itensPorPag) this.pagAtual = 1
-      if (this.pagAtual < 1) this.pagAtual = Math.ceil(this.produtosTotal.length / this.itensPorPag)
-      this.produtosListados = this.produtosTotal.slice((this.pagAtual - 1) * this.itensPorPag, this.pagAtual * this.itensPorPag)
+      if (this.pagAtual > this.numPags) this.pagAtual = 1;
+      if (this.pagAtual < 1) this.pagAtual = this.numPags;
+      this.produtosListados = this.produtosTotal.slice((this.pagAtual - 1) * this.itensPorPag, this.pagAtual * this.itensPorPag);
     },
     passarPagina() {
       this.pagAtual++
@@ -58,4 +60,15 @@ export default {
 </template>
 
 <style>
+div .produtos {
+  position: fixed;
+  top: 70px;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  z-index: 1000;
+}
 </style>
