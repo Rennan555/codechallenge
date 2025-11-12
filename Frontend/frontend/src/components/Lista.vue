@@ -4,7 +4,8 @@ import axios from 'axios'
 export default {
   data() {
     return {
-      produtos: [],
+      produtosListados: [],
+      produtosTotal: [],
       pagAtual: 1,
       itensPorPag: 10,
       numItens: 0
@@ -13,19 +14,29 @@ export default {
   async mounted() {
     this.getProdutos();
     this.intervalId = setInterval(() => {
+      this.getProdutos();
       this.atualizarPagina();
     }, 5000) // 5 segundos
   },
   methods: {
     async getProdutos() {
       const res = await axios.get('http://localhost:8082/alarm');
-      this.produtos = res.data;
-      this.numItens = this.produtos.length
+      this.produtosTotal = res.data;
+      this.numItens = this.produtosTotal.length
       this.atualizarPagina();
     },
     async atualizarPagina() {
-      if (this.pagAtual > this.produtos.length / this.itensPorPag) this.pagAtual = 1
-      this.produtos = this.produtos.slice((this.pagAtual - 1) * this.itensPorPag, this.pagAtual * this.itensPorPag)
+      if (this.pagAtual > this.produtosTotal.length / this.itensPorPag) this.pagAtual = 1
+      if (this.pagAtual < 1) this.pagAtual = Math.ceil(this.produtosTotal.length / this.itensPorPag)
+      this.produtosListados = this.produtosTotal.slice((this.pagAtual - 1) * this.itensPorPag, this.pagAtual * this.itensPorPag)
+    },
+    passarPagina() {
+      this.pagAtual++
+      this.atualizarPagina()
+    },
+    voltarPagina() {
+      this.pagAtual--
+      this.atualizarPagina()
     }
   }
 }
@@ -35,12 +46,14 @@ export default {
    <div class="produtos">
     <h2>Lista de Produtos</h2>
     <ul>
-      <li v-for="p in this.produtos" :key="p._id">
+      <li v-for="p in this.produtosListados" :key="p._id">
         <p>{{ p }}</p>
       </li>
     </ul>
-    <button>+</button>
-    <button>-</button>
+    <p>Total de alarmes: {{ this.numItens }}</p>
+    <button @click="passarPagina">+</button>
+    <button @click="voltarPagina">-</button>
+    <p>Pagina: {{ this.pagAtual }}</p>
   </div>
 </template>
 
