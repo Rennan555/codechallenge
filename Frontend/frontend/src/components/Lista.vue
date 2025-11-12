@@ -95,7 +95,7 @@ export default {
 </script>
 
 <template>
-   <div class="produtos">
+   <div class="alarmes">
     <h2>Lista de Alarmes</h2>
         <div class="filtros">
           <label>Tipo:</label>
@@ -124,22 +124,109 @@ export default {
       </li>
     </ul>
     <p>Total de alarmes: {{ this.numItens }}</p>
-    <button @click="passarPagina">+</button>
-    <button @click="voltarPagina">-</button>
-    <p>Pagina: {{ this.pagAtual }}</p>
+    <div class="paginacao">
+      <button @click="voltarPagina"><</button>
+      <span>Página {{ pagAtual }} de {{ numPags }}</span>
+      <button @click="passarPagina">></button>
+    </div>
   </div>
 </template>
 
 <style>
-div .produtos {
+div .alarmes {
   position: fixed;
   top: 70px;
   left: 0;
-  width: 100%;
+  max-width: 100%;
   height: 100%;
   justify-content: space-between;
   align-items: center;
   padding: 20px;
   z-index: 1000;
+}
+
+.filtros {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.filtros select {
+  padding: 0.4rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 0.95rem;
+  min-width: 120px;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+li {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #eee;
+  font-size: 0.95rem;
+}
+
+.paginacao {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.paginacao button {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0.4rem 0.8rem;
+  border: none;
+  background-color: #12b4ff;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.paginacao button:hover {
+  background-color: #0d8ecf;
+}
+
+@media (max-width: 768px) {
+  .filtros {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .filtros select {
+    width: 100%;
+  }
+
+  li {
+    font-size: 0.9rem;
+  }
+
+  .paginacao {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .produtos {
+    padding: 10px;
+  }
+
+  h2 {
+    font-size: 1.2rem;
+  }
+
+  .paginacao button {
+    width: 100%;
+  }
 }
 </style>
