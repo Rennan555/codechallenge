@@ -32,6 +32,38 @@ export default {
       if (this.pagAtual < 1) this.pagAtual = this.numPags;
       this.produtosListados = this.produtosTotal.slice((this.pagAtual - 1) * this.itensPorPag, this.pagAtual * this.itensPorPag);
     },
+    tratarTipo(type) {
+      switch (type) {
+        case 1:
+          return 'Nulo'
+        case 2:
+          return 'Leve'
+        case 3:
+          return 'Regular'
+        case 4:
+          return 'Emergência'
+        case 5:
+          return 'Urgência'
+        default:
+          return 'Tipo Desconhecido'
+      }
+    },
+    tratarDispositivo(deviceType) {
+      switch (deviceType) {
+        case 1:
+          return 'Sensor'
+        case 2:
+          return 'Computador'
+        case 3:
+          return 'Servidor'
+        case 4:
+          return 'Controle'
+        case 5:
+          return 'Beacon'
+        default:
+          return 'Dispositivo Desconhecido'
+      }
+    },
     passarPagina() {
       this.pagAtual++
       this.atualizarPagina()
@@ -46,10 +78,10 @@ export default {
 
 <template>
    <div class="produtos">
-    <h2>Lista de Produtos</h2>
+    <h2>Lista de Alarmes</h2>
     <ul>
       <li v-for="p in this.produtosListados" :key="p._id">
-        <p>{{ p }}</p>
+        <p>Serial: {{ p.serial }} | Tipo: {{ this.tratarTipo(p.type) }} | Tipo de dispositivo: {{ this.tratarDispositivo(p.deviceType) }}</p>
       </li>
     </ul>
     <p>Total de alarmes: {{ this.numItens }}</p>
